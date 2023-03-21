@@ -49,8 +49,7 @@
         .content-container.right {
             width: 400px;
             height: 1000px;
-            {#border: 1px solid black;#}
-            position: fixed;
+        {#border: 1px solid black;#} position: fixed;
             left: 64%
         }
 
@@ -98,7 +97,10 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-light">
+<div>
+
+</div>
+<nav class="navbar navbar-expand-lg" style="background-color: white">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img width="109" src="https://fontmeme.com/images/instagram-new-logo.png">
@@ -117,125 +119,47 @@
 
 <div class="content-body">
     <div class="content-container left">
-        <div class="main-content">
-            <div class="user-info">
-                <div class="box">
-                    <img class="profile"
-                         src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhEXuC%2FbtqS3IlVDCm%2FO0WutWQTrEWdFtwxoAX5Rk%2Fimg.jpg">
+        {% for feed in feeds %}
+            <div class="main-content">
+                <div class="user-info">
+                    <div class="box">
+                        <img class="profile"
+                             src={{ feed.profile_image }}>
+                    </div>
+                    <div class="nickname">
+                        {{ feed.user_id }}
+                    </div>
                 </div>
-                <div class="nickname">
-                    log_kyung
+                <div style="overflow: hidden">
+                    <img style="width: 100%; height: auto"
+                         src={{ feed.image }}>
                 </div>
-            </div>
-            <div style="overflow: hidden">
-                <img style="width: 100%; height: auto"
-                     src="https://www.jejusi.go.kr/images/jejusi/portal/part/hallim_beach_img01.jpg">
-            </div>
-            <div style="display: flex; justify-content: space-between; margin: 10px 0 5px;">
-                <div>
-                    <span class="material-icons-outlined">favorite_border</span>
-                    <span class="material-icons-outlined">mode_comment</span>
-                    <span class="material-icons-outlined">send</span>
+                <div style="display: flex; justify-content: space-between; margin: 10px 0 5px;">
+                    <div>
+                        <span class="material-icons-outlined">favorite_border</span>
+                        <span class="material-icons-outlined">mode_comment</span>
+                        <span class="material-icons-outlined">send</span>
+                    </div>
+                    <div>
+                        <span class="material-icons-outlined">bookmark_border</span>
+                    </div>
                 </div>
-                <div>
-                    <span class="material-icons-outlined">bookmark_border</span>
+                <div style="margin: 5px 0">
+                    <b>zzang9</b>님 <b>외 {{ feed.like_count }}명</b>이 좋아합니다
                 </div>
-            </div>
-            <div style="margin: 5px 0">
-                <b>zzang9</b>님 <b>외 99명</b>이 좋아합니다
-            </div>
-            <div style="margin: 5px 0">
-                <b>log_kyung</b> 제주도 여행 좋아요
-            </div>
-            <div>
-                <div style="margin: 5px 0"><b>aaaa</b> 나도 제주도 가고싶다 ㅠㅠ</div>
-                <div style="margin: 5px 0"><b>bbbb</b> 너무 예쁘다 여기 어디야?</div>
-            </div>
-            <div style="margin: 5px 0;">
-                <input type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
-            </div>
-            <hr>
-        </div>
-
-        <div class="main-content">
-            <div class="user-info">
-                <div class="box">
-                    <img class="profile"
-                         src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhEXuC%2FbtqS3IlVDCm%2FO0WutWQTrEWdFtwxoAX5Rk%2Fimg.jpg">
-                </div>
-                <div class="nickname">
-                    <b>log_kyung</b>
-                </div>
-            </div>
-            <div style="overflow: hidden">
-                <img style="width: 100%; height: auto"
-                     src="https://www.jejusi.go.kr/images/jejusi/portal/part/hallim_beach_img01.jpg">
-            </div>
-            <div style="display: flex; justify-content: space-between; margin: 10px 0 5px;">
-                <div>
-                    <span class="material-icons-outlined">favorite_border</span>
-                    <span class="material-icons-outlined">mode_comment</span>
-                    <span class="material-icons-outlined">send</span>
+                <div style="margin: 5px 0">
+                    <b>{{ feed.user_id }}</b> {{ feed.content }}
                 </div>
                 <div>
-                    <span class="material-icons-outlined">bookmark_border</span>
+                    <div style="margin: 5px 0"><b>aaaa</b> 나도 제주도 가고싶다 ㅠㅠ</div>
+                    <div style="margin: 5px 0"><b>bbbb</b> 너무 예쁘다 여기 어디야?</div>
                 </div>
-            </div>
-            <div style="margin: 5px 0">
-                <b>zzang9</b>님 <b>외 99명</b>이 좋아합니다
-            </div>
-            <div style="margin: 5px 0">
-                <b>log_kyung</b> 제주도 여행 좋아요
-            </div>
-            <div>
-                <div style="margin: 5px 0"><b>aaaa</b> 나도 제주도 가고싶다 ㅠㅠ</div>
-                <div style="margin: 5px 0"><b>bbbb</b> 너무 예쁘다 여기 어디야?</div>
-            </div>
-            <div style="margin: 5px 0;">
-                <input type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
-            </div>
-            <hr>
-        </div>
-
-        <div class="main-content">
-            <div class="user-info">
-                <div class="box">
-                    <img class="profile"
-                         src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhEXuC%2FbtqS3IlVDCm%2FO0WutWQTrEWdFtwxoAX5Rk%2Fimg.jpg">
+                <div style="margin: 5px 0;">
+                    <input type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
                 </div>
-                <div class="nickname">
-                    <b>log_kyung</b>
-                </div>
+                <hr>
             </div>
-            <div style="overflow: hidden">
-                <img style="width: 100%; height: auto"
-                     src="https://www.jejusi.go.kr/images/jejusi/portal/part/hallim_beach_img01.jpg">
-            </div>
-            <div style="display: flex; justify-content: space-between; margin: 10px 0 5px;">
-                <div>
-                    <span class="material-icons-outlined">favorite_border</span>
-                    <span class="material-icons-outlined">mode_comment</span>
-                    <span class="material-icons-outlined">send</span>
-                </div>
-                <div>
-                    <span class="material-icons-outlined">bookmark_border</span>
-                </div>
-            </div>
-            <div style="margin: 5px 0">
-                <b>zzang9</b>님 <b>외 99명</b>이 좋아합니다
-            </div>
-            <div style="margin: 5px 0">
-                <b>log_kyung</b> 제주도 여행 좋아요
-            </div>
-            <div>
-                <div style="margin: 5px 0"><b>aaaa</b> 나도 제주도 가고싶다 ㅠㅠ</div>
-                <div style="margin: 5px 0"><b>bbbb</b> 너무 예쁘다 여기 어디야?</div>
-            </div>
-            <div style="margin: 5px 0;">
-                <input type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
-            </div>
-            <hr>
-        </div>
+        {% endfor %}
     </div>
 
     <div class="content-container right">
@@ -334,8 +258,19 @@
                 <a style="text-decoration: none; color: #0095f6" href="#">팔로우</a>
             </div>
         </div>
-        <div>소개 도움말 홍보센터 API 채용정보 개인정보처리방침 약관 위치 언어 MetaVerified</div>
-        <div>2023 instagram from meta</div>
+        <div style="margin: 20px 0; font-size: 12px;">
+            <a style="text-decoration: none; color: lightgrey" href="#">소개 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">도움말 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">홍보 센터 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">API ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">채용 정보 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">개인정보처리방침 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">약관 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">위치 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">언어 ・</a>
+            <a style="text-decoration: none; color: lightgrey" href="#">Meta Verified</a>
+        </div>
+        <div style="font-size: 12px; color: lightgrey">© 2023 INSTAGRAM FROM META</div>
     </div>
 </div>
 
