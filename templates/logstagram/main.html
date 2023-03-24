@@ -94,7 +94,7 @@
             margin: 10px 0;
         }
 
-        .modal_overlay {
+        .modal {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -105,7 +105,7 @@
             -webkit-backdrop-filter: blur(1.5px);
         }
 
-        .modal_overlay.show {
+        .modal.show {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -116,20 +116,79 @@
             background: white;
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.18);
-            width: 462px;
-            height: 502px;
-            padding: 5px;
-            position: absolute;
+            width: 452px;
+            height: 492px;
+            position: relative;
             text-align: center;
         }
 
+        .modal_title {
+            font-weight: bold;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+            height: 40px;
+            line-height: 40px;
+        }
+
         .modal_image_upload {
-            outline: 2px dashed black;
-            outline-offset: -10px;
-            text-align: center;
-            transition: all .15s ease-in-out;
             width: 450px;
             height: 450px;
+            transition: all .15s ease-in-out;
+        }
+
+        .modal_image_upload_content {
+            width: 450px;
+            height: 450px;
+            transition: all .15s ease-in-out;
+        }
+
+        .modal_image_content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal_content_write {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border-left: 1px solid rgba(0, 0, 0, 0.18);
+        }
+
+        .feed_name {
+            padding: 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 5px;
+        }
+
+        .feed_name_txt {
+            font-size: 12px;
+            padding: 0px 10px;
+            font-weight: bold;
+        }
+
+        .feed_content_textarea {
+            resize: none;
+            width: 294px;
+            border: none;
+        }
+
+        .feed_content_textarea:focus {
+            outline: none;
+        }
+
+        .profile_box {
+            width: 32px;
+            height: 32px;
+            border-radius: 70%;
+            overflow: hidden;
+        }
+
+        .profile_img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -312,13 +371,42 @@
     </div>
 </div>
 
-<div id="modal_add_feed" class="modal_overlay">
-    <div class="modal_window" style="display: flex; flex-direction: column; align-items: center">
-        <div style="height: 40px; line-height: 40px">
+<div id="modal_add_feed" class="modal modal_overlay">
+    <div class="modal_window">
+        <div class="modal_title">
             새 게시물 만들기
         </div>
         <div class="modal_image_upload">
+            <span style="text-align: center; line-height: 450px; font-size: 20px">사진을 여기에 끌어다 놓으세요</span>
+        </div>
+    </div>
+</div>
 
+<div id="modal_add_feed_content" class="modal modal_overlay_content">
+    <div class="modal_window" style="width: 765px">
+        <div class="modal_title">
+            새 게시물 만들기
+        </div>
+        <div class="modal_image_content">
+            <div id="input_image" class="modal_image_upload_content">
+
+            </div>
+            <div class="modal_content_write">
+                <div class="feed_name">
+                    <div class="profile_box">
+                        <img id="input_profile_image" class="profile_img"
+                             src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhEXuC%2FbtqS3IlVDCm%2FO0WutWQTrEWdFtwxoAX5Rk%2Fimg.jpg">
+                    </div>
+                    <span id="input_user_id" class="feed_name_txt">log_kyung</span>
+                </div>
+                <div style="height: 290px">
+                    <textarea id="input_content" class="feed_content_textarea" rows="10"
+                              placeholder="문구 입력..."></textarea>
+                </div>
+                <div style="width: 100%; text-align: center">
+                    <button id="button_write_feed" class="btn btn-primary" style="width: 268px">공유하기</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -338,7 +426,7 @@
         if (event.target === modal) {
             modal.classList.toggle('show');
 
-            if(!modal.classList.contains('show')) {
+            if (!modal.classList.contains('show')) {
                 body.style.overflow = 'auto';
             }
         }
@@ -371,24 +459,36 @@
         e.preventDefault();
 
         e.dataTransfer = e.originalEvent.dataTransfer;
-        let files = e.dataTransfer.files;
 
+        let files = e.dataTransfer.files;
         if (files.length > 1) {
             alert('하나만 올려라.');
             return;
         }
 
         if (files[0].type.match(/image.*/)) {
-            $(e.target).css({
+            $('.modal_overlay_content').css({
+                "display": 'flex',
+                "align-items": "center",
+                "justify-content": "center"
+            });
+            $('.modal_image_upload_content').css({
                 "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
                 "outline": "none",
-                "background-size": "100% 100%"
+                "background-size": "contain",
+                "background-repeat": "no-repeat",
+                "background-position": "center"
             });
+            $('.modal_overlay').css({
+                display: 'none'
+            });
+
         } else {
             alert("이미지가 아닙니다.");
             return;
         }
     }
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
