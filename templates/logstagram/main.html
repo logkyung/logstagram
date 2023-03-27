@@ -120,9 +120,12 @@
             height: 492px;
             position: relative;
             text-align: center;
+            overflow: hidden;
         }
 
         .modal_title {
+            display: flex;
+            justify-content: space-between;
             font-weight: bold;
             font-size: 16px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.18);
@@ -130,15 +133,25 @@
             line-height: 40px;
         }
 
+        .modal_title_side {
+            margin: 5px;
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
         .modal_image_upload {
             width: 450px;
             height: 450px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 450px;
             transition: all .15s ease-in-out;
         }
 
         .modal_image_upload_content {
             width: 450px;
             height: 450px;
+            text-align: center;
             transition: all .15s ease-in-out;
         }
 
@@ -374,10 +387,14 @@
 <div id="modal_add_feed" class="modal modal_overlay">
     <div class="modal_window">
         <div class="modal_title">
-            새 게시물 만들기
+            <div class="modal_title_side"></div>
+            <div>새 게시물 만들기</div>
+            <div class="modal_title_side">
+                <span id="close_modal" class="close_modal material-icons-outlined">close</span>
+            </div>
         </div>
         <div class="modal_image_upload">
-            <span style="text-align: center; line-height: 450px; font-size: 20px">사진을 여기에 끌어다 놓으세요</span>
+            사진을 여기에 끌어다 놓으세요
         </div>
     </div>
 </div>
@@ -385,7 +402,11 @@
 <div id="modal_add_feed_content" class="modal modal_overlay_content">
     <div class="modal_window" style="width: 765px">
         <div class="modal_title">
-            새 게시물 만들기
+            <div class="modal_title_side"></div>
+            <div>새 게시물 만들기</div>
+            <div class="modal_title_side">
+                <span class="close_modal material-icons-outlined">close</span>
+            </div>
         </div>
         <div class="modal_image_content">
             <div id="input_image" class="modal_image_upload_content">
@@ -415,6 +436,8 @@
     const body = document.querySelector('body');
     const modal = document.getElementById("modal_add_feed");
     const buttonAddFeed = document.getElementById("add_feed");
+    const buttonCloseModal = document.getElementById("close_modal");
+
     buttonAddFeed.addEventListener("click", e => {
         modal.style.top = window.scrollY + 'px';
 
@@ -432,6 +455,10 @@
         }
     });
 
+    buttonCloseModal.addEventListener("click", event => {
+        modal.classList.remove('show');
+    });
+
     $('.modal_image_upload')
         .on("dragover", dragOver)
         .on("dragleave", dragOver)
@@ -443,7 +470,7 @@
 
         if (e.type == "dragover") {
             $(e.target).css({
-                "background-color": "black",
+                "background-color": "lightgray",
                 "outline-offset": "-20px"
             });
         } else {
