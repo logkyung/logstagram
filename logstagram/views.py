@@ -1,11 +1,11 @@
 import os
 from django.shortcuts import render
 from rest_framework.views import APIView
+from content.models import Feed
 
 
-class Sub(APIView):
+class Main(APIView):
     def get(self, request):
-        return render(request, 'logstagram/main.html')
+        feed_list = Feed.objects.all().order_by('-id')  # SELECT * FROM content_feed;
 
-    def post(self, request):
-        return render(request, 'logstagram/main.html')
+        return render(request, 'logstagram/main.html', context={'feeds': feed_list})

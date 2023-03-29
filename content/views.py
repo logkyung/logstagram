@@ -1,17 +1,9 @@
 import os
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Feed
 from uuid import uuid4
 from logstagram.settings import MEDIA_ROOT
-
-
-class Main(APIView):
-    def get(self, request):
-        feed_list = Feed.objects.all().order_by('-id')  # SELECT * FROM content_feed;
-
-        return render(request, 'logstagram/main.html', context={'feeds': feed_list})
 
 
 class UploadFeed(APIView):
