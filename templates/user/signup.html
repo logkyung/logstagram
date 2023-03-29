@@ -18,7 +18,7 @@
 
         .user-info-box {
             border: 1px solid lightgrey;
-            margin-top: 12px;
+            margin-top: 20px;
             padding: 10px 0;
             width: 350px;
             height: 430px;
@@ -34,6 +34,12 @@
             font-weight: bold;
             font-size: 17px;
             margin: 0 40px 10px;
+        }
+
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         input {
@@ -69,7 +75,7 @@
             justify-content: space-evenly;
         }
 
-        a {
+        .insta-info > a {
             text-decoration: none;
             color: gray;
             font-size: 12px;
@@ -88,7 +94,7 @@
             친구들의 사진과 동영상을 보려면 가입하세요.
         </div>
         <div class="signup-form">
-            <input type="text" placeholder="휴대폰 번호 또는 이메일 주소">
+            <input type="email" placeholder="휴대폰 번호 또는 이메일 주소">
             <input type="text" placeholder="성명">
             <input type="text" placeholder="사용자 이름">
             <input type="text" placeholder="비밀번호">
@@ -99,7 +105,7 @@
     </div>
     <div id="second-box" class="login-box">
         계정이 있으신가요?
-        <a style="text-decoration: none; color: #0095f6" href="#">로그인</a>
+        <a style="text-decoration: none; color: #0095f6" href="{% url 'login' %}">로그인</a>
     </div>
     <div class="insta-info">
         <a href="#">Meta</a>
