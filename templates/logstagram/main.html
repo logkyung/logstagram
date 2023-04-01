@@ -27,6 +27,17 @@
             width: 400px;
         }
 
+        .navbar-icons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .navbar-icons span {
+            font-size: 34px;
+            padding-right: 15px;
+        }
+
         .content-body {
             display: flex;
             flex-direction: row;
@@ -217,13 +228,22 @@
             <img width="109" src="https://fontmeme.com/images/instagram-new-logo.png">
         </a>
         <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search">
-        <div>
+        <div class="navbar-icons" style="display: flex; flex-direction: row">
             <span class="material-icons-round">home</span>
-            <span class="material-icons-outlined">search</span>
-            <span class="material-icons-outlined">explore</span>
-            <span class="material-icons-outlined">send</span>
-            <span class="material-icons-outlined">favorite_border</span>
             <span id="add_feed" class="material-icons-outlined">add_box</span>
+            <div class="dropdown">
+                <button class="btn-dropdown" style="border: none; background: white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="box">
+                        <img class="profile"
+                             src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhEXuC%2FbtqS3IlVDCm%2FO0WutWQTrEWdFtwxoAX5Rk%2Fimg.jpg">
+                    </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">프로필</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">로그아웃</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
@@ -289,9 +309,9 @@
                     </div>
                 </div>
             </div>
-            <div style="font-weight: bold; font-size: 12px;">
-                <a style="text-decoration: none; color: #0095f6" href="#">전환</a>
-            </div>
+{#            <div style="font-weight: bold; font-size: 12px;">#}
+{#                <a style="text-decoration: none; color: #0095f6" href="#">전환</a>#}
+{#            </div>#}
         </div>
         <div style="display: flex; justify-content: space-between; padding: 2px">
             <div style="font-weight: bold; color: gray">
@@ -541,25 +561,22 @@
         fd.append('user_id', user_id);
 
         // 유효성 검사
-        if(image.length <= 0) {
+        if (image.length <= 0) {
             alert("이미지가 비어있습니다.");
-        }
-        else if(content.length <= 0) {
+        } else if (content.length <= 0) {
             alert("설명을 입력하세요.");
-        }
-        else if(profile_image.length <= 0) {
+        } else if (profile_image.length <= 0) {
             alert("프로필 이미지가 비어있습니다.");
-        }
-        else if(user_id.length <= 0) {
+        } else if (user_id.length <= 0) {
             alert("사용자 ID가 없습니다.");
-        }
-        else {
+        } else {
             writeFeed(fd);
             console.log(files[0]);
         }
     });
 
     {# 데이터를 서버로 전송 #}
+
     function writeFeed(fd) {
         $.ajax({
             url: "/content/upload",

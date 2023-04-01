@@ -15,6 +15,12 @@ class SignupView(APIView):
         user_id = request.data.get('user_id', None)
         password = request.data.get('password', None)
 
+        # 중복 막기
+        if User.objects.filter(email=email).exists():
+            return Response(status=500, data=dict(message='해당 이메일 주소가 존재합니다.'))
+        elif User.objects.filter(user_id=user_id).exists():
+            return Response(status=500, data=dict(message='사용자 이름 "' + user_id + '"이(가) 존재합니다.'))
+
         User.objects.create(
             email=email,
             name=name,
@@ -23,7 +29,7 @@ class SignupView(APIView):
             profile_image="default_profile.jpg",
         )
 
-        return Response(status=200)
+        return Response(status=200, data=dict(message='회원가입에 성공했습니다. 로그인 해주세요.'))
 
 
 class LoginView(APIView):
@@ -40,7 +46,6 @@ class LoginView(APIView):
         if password is None:
             return Response(status=500, data=dict(message='비밀번호를 입력해주세요'))
 
-        # 중복 방지
         user = User.objects.filter(email=email).first()
 
         if user is None:
@@ -54,3 +59,8 @@ class LoginView(APIView):
 
         return Response(status=200, data=dict(message='로그인에 성공했습니다.'))
 
+
+class LogoutView(APIView):
+    def get(self, request):
+        request.session.flush()
+        return render(request, 'user/login.html')
