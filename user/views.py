@@ -64,3 +64,9 @@ class LogoutView(APIView):
     def get(self, request):
         request.session.flush()
         return render(request, 'user/login.html')
+
+
+class ProfileView(APIView):
+    def get(self, request):
+        return render(request, 'user/profile.html')
+
