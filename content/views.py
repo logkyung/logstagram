@@ -30,4 +30,3 @@ class UploadFeed(APIView):
         )
 
         return Response(status=200)
-

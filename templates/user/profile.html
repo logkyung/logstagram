@@ -194,15 +194,18 @@
         <div style="width: 250px; height: 150px; display: flex; align-items: center; justify-content: center; margin-right: 30px">
             <div class="box" style="width: 150px; height: 150px">
                 <img class="profile"
-                     src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhEXuC%2FbtqS3IlVDCm%2FO0WutWQTrEWdFtwxoAX5Rk%2Fimg.jpg">
+                     src="{% get_media_prefix %}{{ user.profile_image }}">
             </div>
         </div>
         <div>
             <div style="display: flex; flex-direction: row; margin: 20px 0">
                 <div style="font-size: 20px">{{ user.user_id }}</div>
-                <div style="width:100px; background-color: rgb(230, 230, 230); margin: 0 20px; text-align: center; line-height: 30px; border-radius: 8px">
-                    <a style="width:100%; text-decoration: none; color: black; font-weight: bold; font-size: 14px"
-                       href="#">프로필 편집</a>
+                <div style="width:100px; margin: 0 20px; text-align: center; line-height: 30px;">
+                    <button id="profile_update"
+                            style="width:100%;background-color: rgb(230, 230, 230); border: none; border-radius: 8px; color: black; font-weight: bold; font-size: 14px">
+                        프로필 편집
+                    </button>
+                    <input type="file" id="input_fileupload" onchange="profile_upload();" style="display:none;"/>
                 </div>
                 <div style="height: 30px">
                     <span style="line-height: 30px" class="material-icons-outlined">settings</span>
@@ -412,6 +415,38 @@
                 console.log("무조건 실행");
                 closeModal();
                 location.reload();
+            }
+        });
+    }
+
+    $('#profile_update').click(function () {
+        $('#input_fileupload').click();
+    });
+
+    function profile_upload() {
+        let file = $('#input_fileupload')[0].files[0];
+        let email = "{{ user.email }}";
+
+        let fd = new FormData();
+
+        fd.append('file', file);
+        fd.append('email', email);
+
+        $.ajax({
+            url: "/user/profile/update",
+            data: fd,
+            method: "POST",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("성공");
+            },
+            error: function (request, status, error) {
+                console.log("에러");
+            },
+            complete: function () {
+                console.log("완료");
+                location.reload("{% url 'profile' %}");
             }
         });
     }
