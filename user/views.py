@@ -31,7 +31,7 @@ class SignupView(APIView):
             name=name,
             user_id=user_id,
             password=make_password(password),
-            profile_image="default_profile.jpg",
+            profile_image="default_profile.jpeg",
         )
 
         return Response(status=200, data=dict(message='회원가입에 성공했습니다. 로그인 해주세요.'))

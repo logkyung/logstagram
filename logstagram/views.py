@@ -19,4 +19,4 @@ class Main(APIView):
         if user is None:
             return render(request, 'user/login.html')
 
-        return render(request, 'logstagram/main.html', context={'feeds': feed_list})
+        return render(request, 'logstagram/main.html', context={'feeds': feed_list, 'user': user})
