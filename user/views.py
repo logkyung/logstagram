@@ -8,7 +8,6 @@ from rest_framework.views import APIView
 
 from logstagram.settings import MEDIA_ROOT
 from .models import User
-from content.models import Feed
 
 
 class SignupView(APIView):
@@ -62,6 +61,7 @@ class LoginView(APIView):
 
         request.session['loginCheck'] = True
         request.session['email'] = user.email
+        request.session['user_id'] = user.user_id
 
         return Response(status=200, data=dict(message='로그인에 성공했습니다.'))
 
@@ -87,7 +87,7 @@ class ProfileView(APIView):
         return render(request, 'user/profile.html', context={"user": user})
 
 
-class UpdateProfileView(APIView):
+class ProfileUpdateView(APIView):
     def post(self, request):
         file = request.FILES['file']
         email = request.data.get('email')
@@ -104,11 +104,6 @@ class UpdateProfileView(APIView):
         user = User.objects.filter(email=email).first()
         user.profile_image = profile_image
         user.save()
-
-        feeds = Feed.objects.filter(user_id=user.user_id)
-        for feed in feeds:
-            feed.profile_image = profile_image
-            feed.save()
 
         return Response(status=200)
 
