@@ -236,7 +236,8 @@
             </a>
             <span id="add_feed" class="material-icons-outlined">add_box</span>
             <div class="dropdown">
-                <button class="btn-dropdown" style="border: none; background: white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn-dropdown" style="border: none; background: white" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="box">
                         <img class="profile"
                              src="{% get_media_prefix %}{{ user.profile_image }}">
@@ -244,7 +245,9 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="{% url 'profile' %}">프로필</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">로그아웃</a></li>
                 </ul>
             </div>
@@ -286,14 +289,15 @@
                     <b>{{ feed.user_id }}</b> {{ feed.content }}
                 </div>
                 <div>
-                    {% for reply in reply_list %}
+                    {% for reply in feed.reply_list %}
                         <div style="margin: 5px 0">
-                            <b>{{ reply.user_id }}</b> {{ reply.reply_content}}
+                            <b>{{ reply.user_id }}</b> {{ reply.reply_content }}
                         </div>
                     {% endfor %}
                 </div>
                 <div style="margin: 5px 0; display: flex;">
-                    <input id="reply_{{ feed.id }}" class="input_reply" type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
+                    <input id="reply_{{ feed.id }}" class="input_reply" type="text" placeholder="댓글 달기..."
+                           style="border: 0 solid black; width: 100%; outline: none">
                     <button feed_id="{{ feed.id }}" class="btn_reply">게시</button>
                 </div>
                 <hr>
@@ -310,10 +314,10 @@
                 </div>
                 <div style="margin-left: 10px">
                     <div style="font-weight: bold">
-                        log_kyung
+                        {{ user.user_id }}
                     </div>
                     <div style="color: gray">
-                        예경
+                        {{ user.name }}
                     </div>
                 </div>
             </div>
@@ -545,7 +549,7 @@
                 "background-position": "center"
             });
             $("#modal_add_feed").removeClass('show');
-            $('#second_close_modal').on("click", ()=>{
+            $('#second_close_modal').on("click", () => {
                 $('#modal_add_feed_content').removeClass('show');
                 $(body).css({
                     "overflow": "auto",
@@ -606,35 +610,33 @@
     $('.btn_reply').on("click", (e) => {
         let feed_id = $(e.target).attr('feed_id');
         let reply_id = 'reply_' + feed_id;
-        let reply_content = $('#'+reply_id).val();
+        let reply_content = $('#' + reply_id).val();
 
-        if(reply_content.length <= 0) {
+        if (reply_content.length <= 0) {
             alert("댓글을 입력하세요.");
             return 0;
-        }
-        else {
+        } else {
             createReply();
         }
 
         function createReply() {
-        $.ajax({
-            url: "{% url 'reply-create' %}",
-            data: {
-                feed_id: feed_id,
-                reply_content: reply_content,
-            },
-            method: "POST",
-            success: function (data) {
-                alert("댓글을 게시했습니다.");
-                location.replace('{% url 'main-feed' %}')
-            },
-            error: function (request, status, error) {
-                console.log("실패");
-            },
-        });
-    }
+            $.ajax({
+                url: "{% url 'reply-create' %}",
+                data: {
+                    feed_id: feed_id,
+                    reply_content: reply_content,
+                },
+                method: "POST",
+                success: function (data) {
+                    alert("댓글을 게시했습니다.");
+                    location.replace('{% url 'main-feed' %}')
+                },
+                error: function (request, status, error) {
+                    console.log("실패");
+                },
+            });
+        }
     });
-
 
 
 </script>
