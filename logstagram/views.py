@@ -13,7 +13,8 @@ class Main(APIView):
         for feed in feed_object_list:
             user = User.objects.filter(email=feed.email).first()
             reply_list = Reply.objects.filter(feed_id=feed.id)
-            feed_list.append(dict(image=feed.image,
+            feed_list.append(dict(id=feed.id,
+                                  image=feed.image,
                                   content=feed.content,
                                   like_count=feed.like_count,
                                   profile_image=user.profile_image,
@@ -31,4 +32,3 @@ class Main(APIView):
             return render(request, 'user/login.html')
 
         return render(request, 'logstagram/main.html', context={'feeds': feed_list, 'user': user})
-

@@ -280,6 +280,7 @@
 </div>
 
 <script>
+    history.scrollRestoration = "manual"
 
     let files;
 
@@ -310,6 +311,7 @@
 
     function closeModal() {
         modal.classList.remove('show');
+        body.style.overflow = 'auto';
     }
 
     $('.modal_image_upload')
@@ -347,6 +349,9 @@
         }
 
         if (files[0].type.match(/image.*/)) {
+            $('#modal_add_feed_content').css({
+                "top": $(window).scrollTop() + "px",
+            })
             $('#modal_add_feed_content').toggleClass('show');
             $('.modal_image_upload_content').css({
                 "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
@@ -358,6 +363,9 @@
             $("#modal_add_feed").removeClass('show');
             $('#second_close_modal').on("click", () => {
                 $('#modal_add_feed_content').removeClass('show');
+                $(body).css({
+                    "overflow": "auto",
+                });
             })
         } else {
             alert("이미지가 아닙니다.");
@@ -370,26 +378,18 @@
         const file = files[0];
         const image = files[0].name
         const content = $("#input_content").val();
-        const profile_image = "{{ user.profile_image }}";
-        const user_id = "{{ user.user_id }}";
 
         let fd = new FormData();
 
         fd.append('file', file);
         fd.append('image', image);
         fd.append('content', content);
-        fd.append('profile_image', profile_image);
-        fd.append('user_id', user_id);
 
         // 유효성 검사
         if (image.length <= 0) {
             alert("이미지가 비어있습니다.");
         } else if (content.length <= 0) {
             alert("설명을 입력하세요.");
-        } else if (profile_image.length <= 0) {
-            alert("프로필 이미지가 비어있습니다.");
-        } else if (user_id.length <= 0) {
-            alert("사용자 ID가 없습니다.");
         } else {
             writeFeed(fd);
             console.log(files[0]);
@@ -400,7 +400,7 @@
 
     function writeFeed(fd) {
         $.ajax({
-            url: "/content/upload",
+            url: "{% url 'feed-create' %}",
             data: fd,
             method: "POST",
             processData: false,
@@ -433,7 +433,7 @@
         fd.append('email', email);
 
         $.ajax({
-            url: "/user/profile/update",
+            url: "{% url 'update-profile' %}",
             data: fd,
             method: "POST",
             processData: false,
@@ -446,7 +446,7 @@
             },
             complete: function () {
                 console.log("완료");
-                location.reload("{% url 'profile' %}");
+                location.reload();
             }
         });
     }

@@ -210,6 +210,16 @@
             height: 100%;
             object-fit: cover;
         }
+
+        .btn_reply {
+            border: none;
+            background: none;
+            font-size: 14px;
+            width: 50px;
+            color: #0095f6;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 
@@ -278,11 +288,13 @@
                 <div>
                     {% for reply in reply_list %}
                         <div style="margin: 5px 0">
-                            <b>{{ reply.user_id }}</b> {{ reply.reply_content}}</div>
+                            <b>{{ reply.user_id }}</b> {{ reply.reply_content}}
+                        </div>
                     {% endfor %}
                 </div>
-                <div style="margin: 5px 0;">
-                    <input type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
+                <div style="margin: 5px 0; display: flex;">
+                    <input id="reply_{{ feed.id }}" class="input_reply" type="text" placeholder="댓글 달기..." style="border: 0 solid black; width: 100%; outline: none">
+                    <button feed_id="{{ feed.id }}" class="btn_reply">게시</button>
                 </div>
                 <hr>
             </div>
@@ -537,7 +549,7 @@
                 $('#modal_add_feed_content').removeClass('show');
                 $(body).css({
                     "overflow": "auto",
-                })
+                });
             })
         } else {
             alert("이미지가 아닙니다.");
@@ -572,7 +584,7 @@
 
     function writeFeed(fd) {
         $.ajax({
-            url: "/content/upload",
+            url: "{% url 'feed-create' %}",
             data: fd,
             method: "POST",
             processData: false,
@@ -590,6 +602,40 @@
             }
         });
     }
+
+    $('.btn_reply').on("click", (e) => {
+        let feed_id = $(e.target).attr('feed_id');
+        let reply_id = 'reply_' + feed_id;
+        let reply_content = $('#'+reply_id).val();
+
+        if(reply_content.length <= 0) {
+            alert("댓글을 입력하세요.");
+            return 0;
+        }
+        else {
+            createReply();
+        }
+
+        function createReply() {
+        $.ajax({
+            url: "{% url 'reply-create' %}",
+            data: {
+                feed_id: feed_id,
+                reply_content: reply_content,
+            },
+            method: "POST",
+            success: function (data) {
+                alert("댓글을 게시했습니다.");
+                location.replace('{% url 'main-feed' %}')
+            },
+            error: function (request, status, error) {
+                console.log("실패");
+            },
+        });
+    }
+    });
+
+
 
 </script>
 
