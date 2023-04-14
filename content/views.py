@@ -65,3 +65,4 @@ class LikeToggleView(APIView):
                                 user_id=user_id)
 
         return Response(status=200)
+

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from logstagram.settings import MEDIA_ROOT
-from .models import User
+from .models import User, Bookmark
 
 
 class SignupView(APIView):
@@ -104,6 +104,30 @@ class ProfileUpdateView(APIView):
         user = User.objects.filter(email=email).first()
         user.profile_image = profile_image
         user.save()
+
+        return Response(status=200)
+
+
+class BookmarkView(APIView):
+    def post(self, request):
+        feed_id = request.data.get('feed_id', None)
+        user_id = request.session.get('user_id', None)
+        bookmark_text = request.data.get('bookmark_text', True)
+
+        if bookmark_text == 'bookmark':
+            is_marked = False
+        else:
+            is_marked = True
+
+        bookmark = Bookmark.objects.filter(feed_id=feed_id, user_id=user_id).first()
+
+        if bookmark:
+            bookmark.is_marked = is_marked
+            bookmark.save()
+        else:
+            Bookmark.objects.create(feed_id=feed_id,
+                                    user_id=user_id,
+                                    is_marked=is_marked)
 
         return Response(status=200)
 

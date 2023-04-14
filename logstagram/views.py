@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render
 from rest_framework.views import APIView
 from content.models import Feed, Reply, Like
-from user.models import User
+from user.models import User, Bookmark
 
 
 class Main(APIView):
@@ -25,6 +25,7 @@ class Main(APIView):
             reply_list = Reply.objects.filter(feed_id=feed.id)
             like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
             is_liked = Like.objects.filter(feed_id=feed.id, user_id=user_id, is_like=True).exists()
+            is_bookmarked = Bookmark.objects.filter(feed_id=feed.id, user_id=user_id, is_marked=True).exists()
             feed_list.append(dict(id=feed.id,
                                   image=feed.image,
                                   content=feed.content,
@@ -32,7 +33,8 @@ class Main(APIView):
                                   profile_image=user.profile_image,
                                   user_id=user.user_id,
                                   reply_list=reply_list,
-                                  is_liked=is_liked))
+                                  is_liked=is_liked,
+                                  is_bookmarked=is_bookmarked))
 
         return render(request, 'logstagram/main.html', context={'feeds': feed_list, 'user': user})
 
