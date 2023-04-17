@@ -154,6 +154,53 @@
             height: 100%;
             object-fit: cover;
         }
+
+        .content_box {
+            display: flex;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .content_nav_bar {
+            width: 950px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px rgb(220, 220, 220) solid;
+        }
+
+        .btn_content {
+            display: flex;
+            width: 52px;
+            margin-right: 60px;
+            line-height: 50px;
+            color: gray;
+        }
+
+        .btn_content.bookmark {
+            margin-right: 0;
+        }
+
+        .btn_content > span {
+            font-size: 12px;
+            line-height: 50px;
+            margin-right: 5px;
+        }
+
+        .btn_content > div {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn_content.active {
+            color: black;
+        }
+
+        .change {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 
@@ -226,6 +273,53 @@
                 {{ user.name }}
             </div>
         </div>
+    </div>
+</div>
+
+<div class="content_box">
+    <div class="content_nav_bar">
+        <div id="btn-fd-list" class="btn_content active">
+            <span class="material-icons-outlined">grid_on</span>
+            <div>게시물</div>
+        </div>
+        <div id="btn-fav-list" class="btn_content favorite">
+            <span class="material-icons-outlined">favorite_border</span>
+            <div>좋아요</div>
+        </div>
+        <div id="btn-bm-list" class="btn_content bookmark">
+            <span class="material-icons-outlined">bookmark_border</span>
+            <div>저장됨</div>
+        </div>
+    </div>
+</div>
+
+<div id="feed_list" class="change" style="width: 100%;">
+    <div style="width: 900px; display: flex; align-content: flex-start; flex-wrap: wrap;">
+        {% for feed in feed_list %}
+        <div style="width: 300px; height: 300px; padding: 0 5px 5px 0; overflow: hidden">
+            <img style="width: 100%; height:100%; object-fit: cover" src="{% get_media_prefix %}{{ feed.image }}">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="like_list" style="display:none; width: 100%;">
+    <div style="width: 900px; display: flex; align-content: flex-start; flex-wrap: wrap;">
+        {% for feed in like_list %}
+        <div style="width: 300px; height: 300px; padding: 0 5px 5px 0; overflow: hidden">
+            <img style="width: 100%; height:100%; object-fit: cover" src="{% get_media_prefix %}{{ feed.image }}">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="bookmark_list" style="display: none; width: 100%;">
+    <div style="width: 900px; display: flex; align-content: flex-start; flex-wrap: wrap;">
+        {% for feed in bookmark_list %}
+        <div style="width: 300px; height: 300px; padding: 0 5px 5px 0; overflow: hidden">
+            <img style="width: 100%; height:100%; object-fit: cover" src="{% get_media_prefix %}{{ feed.image }}">
+        </div>
+        {% endfor %}
     </div>
 </div>
 
@@ -450,6 +544,50 @@
             }
         });
     }
+
+    $('.btn_content').click(function () {
+        $('.btn_content').removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $('#btn-fd-list').click(function(){
+        $('#feed_list').css({
+            display: "flex",
+            justifyContent: "center",
+        });
+        $('#like_list').css({
+            display: "none"
+        });
+        $('#bookmark_list').css({
+            display: "none"
+        });
+    });
+
+    $('#btn-fav-list').click(function(){
+        $('#like_list').css({
+            display: "flex",
+            justifyContent: "center",
+        });
+        $('#feed_list').css({
+            display: "none"
+        });
+        $('#bookmark_list').css({
+            display: "none"
+        });
+    });
+
+    $('#btn-bm-list').click(function(){
+        $('#bookmark_list').css({
+            display: "flex",
+            justifyContent: "center",
+        });
+        $('#feed_list').css({
+            display: "none"
+        });
+        $('#feed_list').css({
+            display: "none"
+        });
+    });
 
 </script>
 

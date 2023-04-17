@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from logstagram.settings import MEDIA_ROOT
 from .models import User, Bookmark
+from content.models import Feed, Like
 
 
 class SignupView(APIView):
@@ -75,6 +76,7 @@ class LogoutView(APIView):
 class ProfileView(APIView):
     def get(self, request):
         email = request.session.get('email', None)
+        user_id = request.session.get('user_id', None)
 
         if email is None:
             return render(request, 'user/login.html')
@@ -84,7 +86,15 @@ class ProfileView(APIView):
         if user is None:
             return render(request, 'user/login.html')
 
-        return render(request, 'user/profile.html', context={"user": user})
+        feed_list = Feed.objects.filter(email=email)
+        like_feed = list(Like.objects.filter(user_id=user_id, is_like=True).values_list('feed_id', flat=True))
+        like_list = Feed.objects.filter(id__in=like_feed)
+        bookmark_feed = list(Bookmark.objects.filter(user_id=user_id, is_marked=True).values_list('feed_id', flat=True))
+        bookmark_list = Feed.objects.filter(id__in=bookmark_feed)
+        return render(request, 'user/profile.html', context={"user": user,
+                                                             "feed_list": feed_list,
+                                                             "like_list": like_list,
+                                                             "bookmark_list": bookmark_list})
 
 
 class ProfileUpdateView(APIView):

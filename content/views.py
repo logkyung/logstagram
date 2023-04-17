@@ -24,7 +24,6 @@ class FeedCreateView(APIView):
             content=content,
             image=image,
             email=email,
-            like_count=0,
         )
 
         return Response(status=200)
